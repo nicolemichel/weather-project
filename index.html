@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script
+      src="https://kit.fontawesome.com/f50a84e3f1.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
       crossorigin="anonymous"
     />
-    <script
-      src="https://kit.fontawesome.com/f50a84e3f1.js"
-      crossorigin="anonymous"
-    ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="site.css" />
     <title>Weather</title>
@@ -58,18 +58,18 @@
                   <!--weather and temperature start-->
                   <div class="row">
                     <div class="col-6">
-                      <i class="fas fa-sun weather-icon"></i>
+                      <img src="" alt="" id="current-icon" />
                     </div>
-                    <div class="col-6 weather-text">
+                    <div class="col-6" id="current-text">
                       <p class="card-text center">Currently</p>
-                      <div>
-                        <h1
-                          class="card-title measurement"
-                          id="current-temp"
-                        ></h1>
-                        <span id="outline" class="unit right"
-                          ><a href="#" id="unit-btn">ºC</a></span
-                        >
+                      <div class="float-left mt-5">
+                        <div class="center">
+                          <strong
+                            class="card-title measurement"
+                            id="current-temp"
+                          ></strong>
+                          <a href="#" id="unit-btn">ºC</a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -89,17 +89,19 @@
                       </h3>
                       <ul>
                         <li>Humidity: <span id="humidity"></span>%</li>
-                        <li>Wind: <span id="wind"></span>km/h</li>
+                        <li>
+                          Wind: <span id="wind"></span> <span id="speed"></span>
+                        </li>
                       </ul>
                     </div>
                     <div class="col-6">
-                      <p class="card-text center weekday-weather-text">
-                        19<span class="unit">ºC</span>
+                      <p class="card-text center weekday-weather-temps">
+                        <span id="min-temp"></span>
                         <br />
                         <br />
                         <strong class="high"
-                          >27<span class="unit">ºC</span></strong
-                        >
+                          ><span id="max-temp"></span
+                        ></strong>
                       </p>
                       <hr class="low-over-high" />
                     </div>
@@ -134,18 +136,24 @@
               <div class="card right-side">
                 <div class="card-body">
                   <!--search start-->
-                  <div class="row">
-                    <div class="col-12">
-                      <input
-                        type="text"
-                        placeholder="search a city here"
-                        id="city-input"
-                      />
-                      <button type="submit" id="search-btn">
-                        <i class="fas fa-search"></i>
-                      </button>
+                  <form id="search-form">
+                    <div class="row mb-3">
+                      <div class="col-10">
+                        <input
+                          type="search"
+                          placeholder="Type a city.."
+                          class="form-control w-100"
+                          id="city-input"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <div class="col-2">
+                        <button type="submit" id="search-btn" class="w-100">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                   <!--search end-->
                   <!--upcoming day start-->
                   <div class="row">
@@ -165,12 +173,10 @@
                               </p>
                             </div>
                             <div class="col-6">
-                              <p class="card-text center weekday-weather-text">
-                                22<span class="unit">ºC</span>
+                              <p class="card-text center weekday-weather-temps">
+                                22
                                 <br />
-                                <strong class="high"
-                                  >30<span class="unit">ºC</span></strong
-                                >
+                                <strong class="high">30</strong>
                               </p>
                               <hr class="low-over-high" />
                             </div>
@@ -198,11 +204,10 @@
                               </p>
                             </div>
                             <div class="col-6">
-                              <p class="card-text center weekday-weather-text">
-                                18<span class="unit">ºC</span> <br />
-                                <strong class="high"
-                                  >24<span class="unit">ºC</span></strong
-                                >
+                              <p class="card-text center weekday-weather-temps">
+                                18
+                                <br />
+                                <strong class="high">24</strong>
                               </p>
                               <hr class="low-over-high" />
                             </div>
@@ -228,11 +233,10 @@
                               </p>
                             </div>
                             <div class="col-6">
-                              <p class="card-text center weekday-weather-text">
-                                23<span class="unit">ºC</span> <br />
-                                <strong class="high"
-                                  >29<span class="unit">ºC</span></strong
-                                >
+                              <p class="card-text center weekday-weather-temps">
+                                23
+                                <br />
+                                <strong class="high">29</strong>
                               </p>
                               <hr class="low-over-high" />
                             </div>
@@ -260,12 +264,11 @@
                               </div>
                               <div class="col-6">
                                 <p
-                                  class="card-text center weekday-weather-text"
+                                  class="card-text center weekday-weather-temps"
                                 >
-                                  13<span class="unit">ºC</span> <br />
-                                  <strong class="high"
-                                    >17<span class="unit">ºC</span></strong
-                                  >
+                                  13
+                                  <br />
+                                  <strong class="high">17</strong>
                                 </p>
                                 <hr class="low-over-high" />
                               </div>
@@ -292,12 +295,11 @@
                               </div>
                               <div class="col-6">
                                 <p
-                                  class="card-text center weekday-weather-text"
+                                  class="card-text center weekday-weather-temps"
                                 >
-                                  25<span class="unit">ºC</span> <br />
-                                  <strong class="high"
-                                    >33<span class="unit">ºC</span></strong
-                                  >
+                                  25
+                                  <br />
+                                  <strong class="high">33</strong>
                                 </p>
                                 <hr class="low-over-high" />
                               </div>

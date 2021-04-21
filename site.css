@@ -1,34 +1,18 @@
+/*applies to both sides of page*/
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   line-height: 1.5em;
   color: #212629;
 }
 
+hr {
+  border-color: #212629;
+}
+
 .holder {
   background: rgb(33, 38, 41);
   box-shadow: 1px 6px 5px rgba(33, 38, 41, 0.8);
   margin: 5%;
-}
-
-.left-side {
-  box-shadow: 6px 6px 3px rgba(214, 213, 213, 0.2);
-  height: 100%;
-}
-
-.right-side {
-  height: 100%;
-}
-
-.dark {
-  background: #212629;
-  border-radius: 5px;
-  box-shadow: 1px 6px 5px rgba(33, 38, 41, 0.35);
-  color: #fff;
-  margin-bottom: 3%;
-}
-
-hr {
-  border-color: #212629;
 }
 
 .right {
@@ -38,20 +22,83 @@ hr {
 .center {
   text-align: center;
 }
+
+.low-over-high {
+  position: relative;
+  bottom: 40%;
+}
+
+.high {
+  position: relative;
+  top: 15px;
+}
+
+/*left side of page*/
+.left-side {
+  box-shadow: 6px 6px 3px rgba(214, 213, 213, 0.2);
+  height: 100%;
+}
+
 #location-btn {
   color: transparent;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: #212629;
+  margin-right: 3%;
 }
 #location-btn:hover {
   color: #212629;
 }
-.location-icon {
-  margin-right: 3%;
+
+#current-icon {
+  height: 200px;
+  width: 200px;
 }
 
-input {
-  padding: 2%;
+#current-text {
+  font-size: 25px;
+  padding: 30px 0;
+  justify-content: center;
+}
+
+#current-temp {
+  font-size: 75px;
+  font-weight: 900;
+  float: left;
+}
+
+#unit-btn {
+  font-size: 75px;
+  font-weight: 900;
+  color: transparent;
+  text-decoration: none;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #212629;
+}
+#unit-btn:hover {
+  color: #212629;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.news-icon {
+  font-size: 75px;
+}
+
+/*right side of page*/
+.right-side {
+  height: 100%;
+}
+
+.dark {
+  background: #212629;
+  border-radius: 5px;
+  box-shadow: 1px 6px 5px rgba(33, 38, 41, 0.35);
+  color: #F2F2F1;
+  margin-bottom: 3%;
 }
 
 #city-input {
@@ -66,72 +113,29 @@ input {
   border: none;
   border-radius: 5px;
   box-shadow: 1px 3px 5px rgba(33, 38, 41, 0.35);
-  color: #fff;
+  color: #F2F2F1;
   font-size: 20px;
-  padding: 2% 1%;
+  padding: 11%;
   transform: all 200ms ease-in;
-  width: 18%;
 }
-
 #search-btn:hover {
-  background: #fff;
+  background: #F2F2F1;
   border: 1px solid #212629;
   color: #212629;
-}
-
-.weather-icon {
-  font-size: 200px;
-}
-
-.weather-text {
-  font-size: 25px;
-  padding: 30px 0;
-  justify-content: center;
-}
-
-#current-temp {
-  font-size: 75px;
-  font-weight: 900;
-  float: left;
-}
-
-#outline > a {
-  font-size: 75px;
-  font-weight: 900;
-  color: transparent;
-  position: absolute;
-  text-decoration: none;
-  top: 31%;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: #212629;
-}
-#outline > a:hover {
-  color: #212629;
-  text-decoration: none;
-}
-
-.news-icon {
-  font-size: 75px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
 }
 
 .weekday-weather-icon {
   font-size: 70px;
 }
 
-.weekday-weather-text {
+.weekday-weather-temps {
   font-size: 25px;
 }
 
-.low-over-high {
-  position: relative;
-  bottom: 40%;
+a {
+  color: #EC6E4B;
+  text-decoration: none;
 }
-.high {
-  position: relative;
-  top: 15px;
+a:hover {
+  color: #F2F2F1
 }

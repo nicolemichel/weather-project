@@ -33,36 +33,37 @@ let year = today.getFullYear();
 let hour = today.getHours();
 let minutes = today.getMinutes();
 
-let currentDay = document.querySelector("#current-day");
-currentDay.innerHTML = `${day}`;
-let currentDate = document.querySelector("#current-full-date");
-currentDate.innerHTML = `${month} ${date}, ${year}`;
-let currentTime = document.querySelector("#current-time");
-
+if (hour < 10) {
+  hour = `0${hour}`;
+}
 if (minutes < 10) {
-  currentTime.innerHTML = `${hour}:0${minutes}`;
-} else {
-  currentTime.innerHTML = `${hour}:${minutes}`;
+  minutes = `0${minutes}`;
 }
 
-/* 🙀Bonus Feature
-Display a fake temperature (i.e 17) in Celsius and add a link to convert it to Fahrenheit. When clicking on it, it should convert the temperature to Fahrenheit. When clicking on Celsius, it should convert it back to Celsius. */
-// fake temp ºC click button change to ºF //
-//! innerHTML is changing but it is in array - how do i acces to have all ºC and temperatures change?? !//
+document.querySelector("#current-day").innerHTML = `${day}`;
+document.querySelector("#current-full-date").innerHTML = `${month} ${date}, ${year}`;
+document.querySelector("#current-time").innerHTML = `${hour}:${minutes}`;
 
+// ºC click button change to ºF //
 let unitBtn = document.querySelector("#unit-btn");
-let unit = document.getElementsByClassName(".unit");
 let clickCount = 0;
-let metric = "ºC";
-let imperial = "ºF";
+let currentTemp = null;
+let currentWind = 0;
 
 function changeUnit(event) {
   event.preventDefault();
   clickCount++;
   if (clickCount % 2 === 0) {
-    unit.innerHTML = `${metric}`;
+    unitBtn.innerHTML = `ºC`;
+    document.querySelector("#current-temp").innerHTML = currentTemp;
+    document.querySelector("#wind").innerHTML = `${currentWind} km/h`;
   } else {
-    unit.innerHTML = `${imperial}`;
+    unitBtn.innerHTML = `ºF`;
+    document.querySelector("#current-temp").innerHTML = currentTemp;
+    let fahrenheitTemp = Math.round((currentTemp * 9) / 5 + 32);
+    document.querySelector("#current-temp").innerHTML = `${fahrenheitTemp}`;
+    let milesWind = Math.round(currentWind / 1.609);
+    document.querySelector("#wind").innerHTML = `${milesWind} mph`;
   }
 }
 
@@ -79,29 +80,41 @@ function showCity(event) {
 
 function showSearched(response) {
   document.querySelector("#city").innerHTML = response.data.name;
-  document.querySelector("#current-temp").innerHTML = Math.round(
-    response.data.main.temp
-  );
+  currentTemp = Math.round(response.data.main.temp);
+  document.querySelector("#current-temp").innerHTML = currentTemp;
   document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+  currentWind = Math.round(response.data.wind.speed);
   document.querySelector("#wind").innerHTML = Math.round(
-    response.data.wind.speed
-  );
+    currentWind
+  ) + ` km/h`;
   document.querySelector("#description").innerHTML =
     response.data.weather[0].main;
+  document
+    .querySelector("#current-icon")
+    .setAttribute(
+      "src",
+      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+    );
+  document
+    .querySelector("#current-icon")
+    .setAttribute("alt", response.data.weather[0].description);
+    document.querySelector("#min-temp").innerHTML = Math.round(
+      response.data.main.temp_min
+    );
+    document.querySelector("#max-temp").innerHTML = Math.round(
+      response.data.main.temp_max
+    );
 }
 
 searchBtn.addEventListener("click", showCity);
 
-// load a default
 function search(city) {
   let apiKey = "7188b6a77c9693ed94470114f98e8761";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showSearched);
 }
 
-search("California");
-
-// BONUS current location button - When clicking on it, it uses the Geolocation API to get your GPS coordinates and display the city and current temperature using the OpenWeather API.
+// get temperature at location
 let locationBtn = document.querySelector("#location-btn");
 
 function showCoords(position) {
@@ -126,3 +139,6 @@ function getCoords() {
 }
 
 locationBtn.addEventListener("click", getCoords);
+
+// load a default
+search("Santa Monica");
