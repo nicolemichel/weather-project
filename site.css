@@ -79,6 +79,10 @@ hr {
   text-decoration: none;
 }
 
+#description::first-letter {
+  text-transform: capitalize;
+}
+
 ul {
   list-style: none;
   padding: 0;
