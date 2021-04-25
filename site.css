@@ -128,11 +128,11 @@ ul {
   color: #212629;
 }
 
-.weekday-weather-icon {
+#forecast .weekday-weather-icon {
   font-size: 70px;
 }
 
-.weekday-weather-temps {
+#forecast .weekday-weather-temps {
   font-size: 25px;
 }
 

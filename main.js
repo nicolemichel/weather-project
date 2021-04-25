@@ -1,17 +1,21 @@
 // current date and time //
-function formatDate(timestamp) {
-  let today = new Date(timestamp);
-  
+function formatDay(timestamp) {
+  let date = new Date(timestamp);
   let weekdays = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday",
-    "Sunday"
+    "Saturday"
   ];
-  
+  return weekdays[date.getDay()];
+}
+
+function formatDate(timestamp) {
+  let today = new Date(timestamp);
+
   let months = [
     "January",
     "February",
@@ -26,26 +30,27 @@ function formatDate(timestamp) {
     "November",
     "December"
   ];
-  
-  let day = weekdays[today.getDay() - 1];
+
   let month = months[today.getMonth()];
   let date = today.getDate();
   let year = today.getFullYear();
-  let hour = today.getHours();
-  let minutes = today.getMinutes();
-  
+
+  return `${month} ${date}, ${year}`;
+}
+
+function formatTime(timestamp) {
+  let now = new Date(timestamp);
+  let hour = now.getHours();
+  let minutes = now.getMinutes();
+
   if (hour < 10) {
     hour = `0${hour}`;
   }
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
-  
-  document.querySelector("#current-day").innerHTML = `${day}`;
-  document.querySelector(
-    "#current-full-date"
-  ).innerHTML = `${month} ${date}, ${year}`;
-  document.querySelector("#current-time").innerHTML = `${hour}:${minutes}`;
+
+  return `${hour}:${minutes}`;
 }
 
 // ºC click button change to ºF //
@@ -64,9 +69,9 @@ function changeUnit(event) {
     document.querySelector("#wind").innerHTML = `${currentWind} km/h`;
   } else {
     unitBtn.innerHTML = `ºF`;
-    //document.querySelector("#current-temp").innerHTML = currentTemp;
-    //let fahrenheitTemp = Math.round((currentTemp * 9) / 5 + 32);
-    //document.querySelector("#current-temp").innerHTML = `${fahrenheitTemp}`;
+    document.querySelector("#current-temp").innerHTML = currentTemp;
+    let fahrenheitTemp = Math.round((currentTemp * 9) / 5 + 32);
+    document.querySelector("#current-temp").innerHTML = `${fahrenheitTemp}`;
     let milesWind = Math.round(currentWind / 1.609);
     document.querySelector("#wind").innerHTML = `${milesWind} mph`;
     unit = "imperial";
@@ -85,6 +90,15 @@ function showCity(event) {
 }
 
 function showSearched(response) {
+  document.querySelector("#current-day").innerHTML = `${formatDay(
+    response.data.dt * 1000
+  )}`;
+  document.querySelector("#current-full-date").innerHTML = `${formatDate(
+    response.data.dt * 1000
+  )}`;
+  document.querySelector("#current-time").innerHTML = `${formatTime(
+    response.data.dt * 1000
+  )}`;
   document.querySelector("#city").innerHTML = response.data.name;
   currentTemp = Math.round(response.data.main.temp);
   document.querySelector("#current-temp").innerHTML = currentTemp;
@@ -109,8 +123,6 @@ function showSearched(response) {
     response.data.main.temp_max
   );
 
-  formatDate();
-
   getForecast(response.data.coord);
 }
 
@@ -134,12 +146,12 @@ function showCoords(position) {
 }
 
 function showLocal(response) {
-  let pulledTemp = Math.round(response.data.main.temp);
-  let currentTemp = document.querySelector("#current-temp");
-  let location = document.querySelector("#city");
-  let pulledLocation = response.data.name;
-  location.innerHTML = pulledLocation;
-  currentTemp.innerHTML = `${pulledTemp}`;
+  currentTemp = Math.round(response.data.main.temp);
+  document.querySelector("#current-temp").innerHTML = currentTemp;
+  document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+  currentWind = Math.round(response.data.wind.speed);
+  document.querySelector("#wind").innerHTML = Math.round(currentWind) + ` km/h`;
+  document.querySelector("#city").innerHTML = response.data.name;
 }
 
 function getCoords() {
@@ -152,48 +164,81 @@ function showForecast(response) {
   let forecast = response.data.daily;
 
   let forecastElement = document.querySelector("#forecast");
-
-  let forecastHTML = `<div class="row">`;
+  
   forecast.forEach(function(forecastDay, index) {
-    if (index < 6) {
+    if (index === 1) {
+      forecastHTML = `
+      <div class="row">
+        <div class="col-12">
+          <div class="card dark">
+            <div class="card-body">
+              <div class="col-12">
+                <p class="card-text">${formatDay(forecastDay.dt)}</p>
+                <hr />
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <p class="card-text">
+                    <img src="https://openweathermap.org/img/wn/${
+                      forecastDay.weather[0].icon
+                    }@2x.png" alt="" width="42px" />
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p class="card-text center weekday-weather-temps">
+                    ${Math.round(forecastDay.temp.min)}
+                    <br />
+                    <strong class="high">${Math.round(
+                      forecastDay.temp.max
+                    )}</strong>
+                  </p>
+                  <hr class="low-over-high" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+    }
+    if (index > 1 && index < 5) {
       forecastHTML =
-        forecastHTML +
-        `   
-        <!--day 2 start-->
-          <div class="col-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="col-12">
-                  <p class="card-text">${formatDate(forecastDay.dt)}</p>
-                  <hr />
-                </div>
-                <div class="row">
-                  <div class="col-6">
-                    <p class="card-text">
-                      <img src="https://openweathermap.org/img/wn/${
-          forecastDay.weather[0].icon
-        }@2x.png" alt="" width="42px" class="weekday-weather-icon"/>
-                    </p>
-                  </div>
-                  <div class="col-6">
-                    <p class="card-text center weekday-weather-temps">
-                      ${Math.round(forecastDay.temp.min)}
-                      <br />
-                      <strong class="high">${Math.round(
-          forecastDay.temp.max
-        )}</strong>
-                    </p>
-                    <hr class="low-over-high" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          <!--day 2 end-->
+        `
+      <div class="row">
+        <div class="col-6">
+          <div class="card dark">
+            <div class="card-body">
+              <div class="col-12">
+              <p class="card-text">${formatDay(forecastDay.dt)}</p>
+              <hr />
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <p class="card-text">
+                    <img src="https://openweathermap.org/img/wn/${
+                      forecastDay.weather[0].icon
+                    }@2x.png" alt="" width="42px" />
+                  </p>
+                </div>
+                <div class="col-6">
+                <p class="card-text center weekday-weather-temps">
+                  ${Math.round(forecastDay.temp.min)}
+                  <br />
+                  <strong class="high">${Math.round(
+                    forecastDay.temp.max
+                  )}</strong>
+                </p>
+                <hr class="low-over-high" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       `;
     }
   });
 
-  forecastHTML = forecastHTML + `</div`;
   forecastElement.innerHTML = forecastHTML;
 }
 
