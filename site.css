@@ -25,7 +25,7 @@ hr {
 
 .low-over-high {
   position: relative;
-  bottom: 40%;
+  bottom: 30%;
 }
 
 .high {
@@ -69,12 +69,6 @@ hr {
 #unit-btn {
   font-size: 75px;
   font-weight: 900;
-  color: transparent;
-  text-decoration: none;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: #212629;
-}
-#unit-btn:hover {
   color: #212629;
   text-decoration: none;
 }
